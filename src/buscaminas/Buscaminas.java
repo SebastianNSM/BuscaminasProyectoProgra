@@ -17,18 +17,20 @@ public class Buscaminas {
     static BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
-//        int [][] prueba = new int[5][5];
-//        imprimirMapa(prueba);
-//        RutinasMinas.crearMinas(prueba);
-//        imprimirMapa(prueba);
         setUp();
     }
+    
+    /*
+    Estos procedimientos son para generar el mapa  \\
+    Estas procedimientos son para generar el mapa  VVV
+    Estos procedimientos son para generar el mapa   V
+    */
 
     static void setUp() throws IOException {
         int opc;
         mostrarMenuInicio();
-        opc = leerOpcion();
-        ejecutarAccion(opc);
+        opc = leerOpcionSetUp();
+        ejecutarAccionSetUp(opc);
     }
 
     static void mostrarMenuInicio() {
@@ -38,7 +40,7 @@ public class Buscaminas {
         System.out.println("/-----------------/");
     }
 
-    static int leerOpcion() throws IOException {
+    static int leerOpcionSetUp() throws IOException {
 
         int opcion;
 
@@ -49,13 +51,13 @@ public class Buscaminas {
         return opcion;
     }
 
-    static void ejecutarAccion(int popcion) throws IOException {
+    static void ejecutarAccionSetUp(int popcion) throws IOException {
 
         switch (popcion) {
             case 1:
                 imprimirMapa(RutinasMinas.facilTerreno);
-                RutinasMinas.setMines(RutinasMinas.facilCompleto);
-                imprimirMapa(RutinasMinas.facilCompleto);
+                RutinasMinas.setMines(RutinasMinas.facilTerreno);
+                imprimirMapa(RutinasMinas.facilTerreno);
                 break;
             case 2:
                 imprimirMapa(RutinasMinas.medioTerreno);
@@ -68,8 +70,13 @@ public class Buscaminas {
                 System.out.println();
                 break;
         }
-//        EWTsadafs
     }
+    
+    /*
+    Estos procedimientos son para generar el mapa   A
+    Estas procedimientos son para generar el mapa  AAA
+    Estos procedimientos son para generar el mapa  ||
+    */
 
     public static void imprimirMapa(int[][] pmapa) {
         //Estos simbolos nunca cambian, se quedan siempre iguales
