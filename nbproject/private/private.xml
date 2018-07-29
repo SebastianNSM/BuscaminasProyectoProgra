@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="3"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="5">
+        <file>
+            <url>src/buscaminas/Buscaminas.java</url>
+            <bookmark id="5">
+                <name/>
+                <line>22</line>
+                <key/>
+            </bookmark>
+            <bookmark id="4">
+                <name/>
+                <line>33</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/sebas/Documents/NetBeansProjects/Buscaminas/src/buscaminas/Buscaminas.java</file>
-            <file>file:/C:/Users/sebas/Documents/NetBeansProjects/Buscaminas/src/buscaminas/RutinasMinas.java</file>
+            <file>file:/C:/Users/sebas/Documents/NetBeansProjects/BuscaminasProyectoProgra/src/buscaminas/Buscaminas.java</file>
+            <file>file:/C:/Users/sebas/Documents/NetBeansProjects/BuscaminasProyectoProgra/src/buscaminas/RutinasMinas.java</file>
         </group>
     </open-files>
 </project-private>

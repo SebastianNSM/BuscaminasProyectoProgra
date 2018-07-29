@@ -17,15 +17,114 @@ public class Buscaminas {
     static BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
-        setUp();
+        int[][] prueba = {{11, 11, 11}, {11, 11, 11}, {11, 9, 11}};
+        imprimirMapa(prueba);
+        buscaMina(prueba, 1,0);
     }
-    
+
+    public static int buscaMina(int[][] pmapa, int row, int col) {
+        int currentPosition = 0;
+//      Verifica que el row y el col esten en el rango del arreglo
+        int length = pmapa.length;
+
+        int topRow = row - 1;
+        int botRow = row + 1;
+        int leftCol = col - 1;
+        int rightCol = col + 1;
+        
+        boolean topExist = checkExistence(length, topRow, col);
+        boolean topLeftExist = checkExistence(length, topRow, leftCol);
+        boolean topRightExist = checkExistence(length, topRow, rightCol);
+        boolean botExist = checkExistence(length, botRow, col);
+        boolean botLeftExist = checkExistence(length, botRow, leftCol);
+        boolean botRightExist = checkExistence(length, botRow, rightCol);
+        boolean leftExist = checkExistence(length, row, leftCol);
+        boolean rightExist = checkExistence(length, botRow, rightCol);
+        
+        
+        if (topExist) {
+            int top = pmapa[topRow][col];
+            if (top == 9) {
+                currentPosition++;
+            }
+            System.out.println("true top");
+        }
+        if (topLeftExist) {
+            int topLeft = pmapa[topRow][leftCol];
+            if (topLeft == 9) {
+                currentPosition++;
+            }
+            System.out.println("true top left");
+        }
+        if (leftExist) {
+            int left = pmapa[row][leftCol];
+            if (left == 9) {
+                currentPosition++;
+            }
+            System.out.println("true left");
+        }
+        if (botLeftExist) {
+            int botLeft = pmapa[botRow][leftCol];
+            if (botLeft == 9) {
+                currentPosition++;
+            }
+            System.out.println("true bot left");
+        }
+        if (botExist) {
+            int bot = pmapa[botRow][col];
+            if (bot == 9) {
+                currentPosition++;
+            }
+            System.out.println("true bot");
+        }
+        if (botRightExist) {
+            int botRight = pmapa[botRow][rightCol];
+            if (botRight == 9) {
+                currentPosition++;
+            }
+            System.out.println("true bot right");
+        }
+        if (rightExist) {
+            int right = pmapa[row][rightCol];
+            if (right == 9) {
+                currentPosition++;
+            }
+            System.out.println("true right");
+        }
+        if (topRightExist) {
+            int topRight = pmapa[topRow][rightCol];
+            if (topRight == 9) {
+                currentPosition++;
+            }
+            System.out.println("true top right");
+        }
+        
+        
+        System.out.println(currentPosition);
+        return currentPosition;
+    }
+
+    public static boolean checkExistence(int length, int row, int col) {
+        boolean rowExist = true;
+        boolean colExist = true;
+        boolean positionExists = false;
+        if (row < 0 || row > length - 1) {
+            rowExist = false;
+        }
+        if (col < 0 || col > length - 1) {
+            colExist = false;
+        }
+        if (rowExist && colExist) {
+            positionExists = true;
+        }
+        return positionExists;
+    }
+
     /*
     Estos procedimientos son para generar el mapa  \\
     Estas procedimientos son para generar el mapa  VVV
     Estos procedimientos son para generar el mapa   V
-    */
-
+     */
     static void setUp() throws IOException {
         int opc;
         mostrarMenuInicio();
@@ -71,13 +170,12 @@ public class Buscaminas {
                 break;
         }
     }
-    
+
     /*
     Estos procedimientos son para generar el mapa   A
     Estas procedimientos son para generar el mapa  AAA
     Estos procedimientos son para generar el mapa  ||
-    */
-
+     */
     public static void imprimirMapa(int[][] pmapa) {
         //Estos simbolos nunca cambian, se quedan siempre iguales
         char[] symbolos = RutinasMinas.SYMBOLS;
@@ -103,7 +201,12 @@ public class Buscaminas {
                 if (col == 0) {
                     System.out.print("[" + (row + 1) + "]\t");
                 }
-                System.out.print(symbolos[pmapa[row][col]] + "\t");
+                int celdaActual = pmapa[row][col];
+                if (celdaActual < 0 || celdaActual > symbolos.length - 1) {
+                    System.out.println("404");
+                } else {
+                    System.out.print(symbolos[celdaActual] + "\t");
+                }
             }
             System.out.println();
         }
