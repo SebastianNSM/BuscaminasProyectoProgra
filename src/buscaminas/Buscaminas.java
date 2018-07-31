@@ -18,6 +18,7 @@ public class Buscaminas {
 
     public static void main(String[] args) throws IOException {
         setUp();
+        juego();
     }
 
     /*
@@ -31,6 +32,13 @@ public class Buscaminas {
         opc = leerOpcionSetUp();
         ejecutarAccionSetUp(opc);
     }
+    
+    static void juego() throws IOException {
+        int opc;
+        mostrarMenuJuego();
+        opc = leerOpcionJuego();
+        ejecutarAccionJuego(opc);
+    }
 
     static void mostrarMenuInicio() {
         System.out.println("/-----------------/");
@@ -38,7 +46,42 @@ public class Buscaminas {
         System.out.println("| 2.  Medio (8x8) |");
         System.out.println("/-----------------/");
     }
+    static void mostrarMenuJuego(){
+        System.out.println("/-----------------/");
+        System.out.println("| 1.  Descubrir   |");
+        System.out.println("| 2.  Marcar      |");
+        System.out.println("/-----------------/");
+    }
+    static int leerOpcionJuego() throws IOException {
 
+        int opcion;
+
+        System.out.print("Seleccione lo que desea hacer con el número correspondiente:\t");
+        opcion = Integer.parseInt(leer.readLine());
+        System.out.println();
+
+        return opcion;
+    }
+
+    static void ejecutarAccionJuego(int popcion) throws IOException {
+//      En esto debo crear el terreno de juego (seleccionas el modo de juego, generar las bombas, acomodar los numeros)
+        switch (popcion) {
+            case 1:
+                int row = leerRow();
+                int col = leerCol();
+                RutinasMinas.descubrirEspacio();
+                break;
+            case 2:
+                
+                break;
+            default: //Cualquier otro valor dado por el usuario se considera invalido
+
+                System.out.println("Opcion invalida");
+                System.out.println();
+                break;
+        }
+    }
+    
     static int leerOpcionSetUp() throws IOException {
 
         int opcion;
@@ -54,13 +97,11 @@ public class Buscaminas {
 //      En esto debo crear el terreno de juego (seleccionas el modo de juego, generar las bombas, acomodar los numeros)
         switch (popcion) {
             case 1:
-                imprimirMapa(RutinasMinas.facilTerreno);
                 RutinasMinas.setMines(RutinasMinas.facilCompleto);
                 RutinasMinas.generaMapa(RutinasMinas.facilCompleto);
                 imprimirMapa(RutinasMinas.facilCompleto);
                 break;
             case 2:
-                imprimirMapa(RutinasMinas.medioTerreno);
                 RutinasMinas.setMines(RutinasMinas.medioCompleto);
                 RutinasMinas.generaMapa(RutinasMinas.medioCompleto);
                 imprimirMapa(RutinasMinas.medioCompleto);
@@ -116,5 +157,15 @@ public class Buscaminas {
         }
         System.out.println();
     }
-
+    
+    public static int leerRow() throws IOException{
+        System.out.print("Fila del espacio que desea descubrir:\t");
+        int row = Integer.parseInt(leer.readLine());
+        return row;
+    }
+    public static int leerCol() throws IOException{
+        System.out.print("Columna del espacio que desea descubrir:\t");
+        int col = Integer.parseInt(leer.readLine());
+        return col;
+    }
 }
