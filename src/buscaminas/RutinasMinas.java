@@ -114,7 +114,16 @@ public class RutinasMinas {
             }
         }
     }
-
+    
+    public static int currentPositionValue(boolean position,int [][] pmapa, int row, int col){
+        int counter = 0;
+        if(position){
+            if(pmapa[row][col] == 9){
+                counter++;
+            }
+        }
+        return counter;
+    }
     public static int buscaMina(int[][] pmapa, int row, int col) {
         int currentPosition = 0;
 //      Verifica que el row y el col esten en el rango del arreglo
@@ -133,55 +142,58 @@ public class RutinasMinas {
         boolean botRightExist = checkExistence(length, botRow, rightCol);
         boolean leftExist = checkExistence(length, row, leftCol);
         boolean rightExist = checkExistence(length, row, rightCol);
-
-        if (topExist) {
-            int top = pmapa[topRow][col];
-            if (top == 9) {
-                currentPosition++;
-            }
-        }
-        if (topLeftExist) {
-            int topLeft = pmapa[topRow][leftCol];
-            if (topLeft == 9) {
-                currentPosition++;
-            }
-        }
-        if (leftExist) {
-            int left = pmapa[row][leftCol];
-            if (left == 9) {
-                currentPosition++;
-            }
-        }
-        if (botLeftExist) {
-            int botLeft = pmapa[botRow][leftCol];
-            if (botLeft == 9) {
-                currentPosition++;
-            }
-        }
-        if (botExist) {
-            int bot = pmapa[botRow][col];
-            if (bot == 9) {
-                currentPosition++;
-            }
-        }
-        if (botRightExist) {
-            int botRight = pmapa[botRow][rightCol];
-            if (botRight == 9) {
-                currentPosition++;
-            }
-        }
-        if (rightExist) {
-            int right = pmapa[row][rightCol];
-            if (right == 9) {
-                currentPosition++;
-            }
-        }
-        if (topRightExist) {
-            int topRight = pmapa[topRow][rightCol];
-            if (topRight == 9) {
-                currentPosition++;
-            }
-        }
+        
+        currentPosition = currentPositionValue(leftExist, pmapa, row, leftCol)+currentPositionValue(rightExist, pmapa, row, rightCol)+currentPositionValue(botRightExist, pmapa, botRow, rightCol)+currentPositionValue(botLeftExist,pmapa,botRow,leftCol)+currentPositionValue(botExist,pmapa,botRow,col)+currentPositionValue(topRightExist,pmapa,topRow,rightCol)+currentPositionValue(topLeftExist,pmapa,topRow,leftCol)+currentPositionValue(topExist,pmapa,topRow,col);
+        
+        
+//        if (topExist) {
+//            int top = pmapa[topRow][col];
+//            if (top == 9) {
+//                currentPosition++;
+//            }
+//        }
+//        if (topLeftExist) {
+//            int topLeft = pmapa[topRow][leftCol];
+//            if (topLeft == 9) {
+//                currentPosition++;
+//            }
+//        }
+//        if (leftExist) {
+//            int left = pmapa[row][leftCol];
+//            if (left == 9) {
+//                currentPosition++;
+//            }
+//        }
+//        if (botLeftExist) {
+//            int botLeft = pmapa[botRow][leftCol];
+//            if (botLeft == 9) {
+//                currentPosition++;
+//            }
+//        }
+//        if (botExist) {
+//            int bot = pmapa[botRow][col];
+//            if (bot == 9) {
+//                currentPosition++;
+//            }
+//        }
+//        if (botRightExist) {
+//            int botRight = pmapa[botRow][rightCol];
+//            if (botRight == 9) {
+//                currentPosition++;
+//            }
+//        }
+//        if (rightExist) {
+//            int right = pmapa[row][rightCol];
+//            if (right == 9) {
+//                currentPosition++;
+//            }
+//        }
+//        if (topRightExist) {
+//            int topRight = pmapa[topRow][rightCol];
+//            if (topRight == 9) {
+//                currentPosition++;
+//            }
+//        }
         pmapa[row][col] = currentPosition;
         return currentPosition;
     }
