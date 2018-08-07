@@ -17,8 +17,8 @@ public class Buscaminas {
     static BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
+//        Esto genera el mapa con las posiciones que elija el usuario
         setUp();
-        juego();
     }
 
     /*
@@ -32,12 +32,15 @@ public class Buscaminas {
         opc = leerOpcionSetUp();
         ejecutarAccionSetUp(opc);
     }
-    
-    static void juego() throws IOException {
-        int opc;
-        mostrarMenuJuego();
-        opc = leerOpcionJuego();
-        ejecutarAccionJuego(opc);
+
+    static void juego(int[][] juego, int[][] completo) throws IOException {
+        boolean win = false;
+        do {
+            int opc;
+            mostrarMenuJuego();
+            opc = leerOpcionJuego();
+            win = ejecutarAccionJuego(opc, juego, completo);
+        } while (win);
     }
 
     static void mostrarMenuInicio() {
@@ -46,12 +49,22 @@ public class Buscaminas {
         System.out.println("| 2.  Medio (8x8) |");
         System.out.println("/-----------------/");
     }
-    static void mostrarMenuJuego(){
+
+    static void mostrarMenuJuego() {
         System.out.println("/-----------------/");
         System.out.println("| 1.  Descubrir   |");
         System.out.println("| 2.  Marcar      |");
         System.out.println("/-----------------/");
     }
+    
+    static void textoPerder(){
+        System.out.println("/-----------------/");
+        System.out.println("|.................|");
+        System.out.println("|...Has perdido!..|");
+        System.out.println("|.................|");
+        System.out.println("/-----------------/");
+    }
+
     static int leerOpcionJuego() throws IOException {
 
         int opcion;
@@ -63,16 +76,27 @@ public class Buscaminas {
         return opcion;
     }
 
-    static void ejecutarAccionJuego(int popcion) throws IOException {
+    static boolean ejecutarAccionJuego(int popcion, int[][] juego, int[][] completo) throws IOException {
 //      En esto debo crear el terreno de juego (seleccionas el modo de juego, generar las bombas, acomodar los numeros)
+        int row = -1;
+        int col = -1;
+        boolean win = true;
         switch (popcion) {
             case 1:
-                int row = leerRow();
-                int col = leerCol();
-                RutinasMinas.descubrirEspacio();
+                row = leerRow();
+                col = leerCol();
+                win = RutinasMinas.descubrirEspacio(juego, completo, row, col);
+                if (win == true) {
+                    imprimirMapa(juego);
+                }else{
+                    textoPerder();
+                }
                 break;
             case 2:
-                
+                row = leerRow();
+                col = leerCol();
+                RutinasMinas.marcarEspacio(juego, completo, row, col);
+                imprimirMapa(juego);
                 break;
             default: //Cualquier otro valor dado por el usuario se considera invalido
 
@@ -80,8 +104,9 @@ public class Buscaminas {
                 System.out.println();
                 break;
         }
+        return win;
     }
-    
+
     static int leerOpcionSetUp() throws IOException {
 
         int opcion;
@@ -99,12 +124,16 @@ public class Buscaminas {
             case 1:
                 RutinasMinas.setMines(RutinasMinas.facilCompleto);
                 RutinasMinas.generaMapa(RutinasMinas.facilCompleto);
+                imprimirMapa(RutinasMinas.facilJuego);
                 imprimirMapa(RutinasMinas.facilCompleto);
+                juego(RutinasMinas.facilJuego, RutinasMinas.facilCompleto);
                 break;
             case 2:
                 RutinasMinas.setMines(RutinasMinas.medioCompleto);
                 RutinasMinas.generaMapa(RutinasMinas.medioCompleto);
+                imprimirMapa(RutinasMinas.medioJuego);
                 imprimirMapa(RutinasMinas.medioCompleto);
+                juego(RutinasMinas.medioJuego, RutinasMinas.medioCompleto);
                 break;
             default: //Cualquier otro valor dado por el usuario se considera invalido
 
@@ -157,15 +186,16 @@ public class Buscaminas {
         }
         System.out.println();
     }
-    
-    public static int leerRow() throws IOException{
+
+    public static int leerRow() throws IOException {
         System.out.print("Fila del espacio que desea descubrir:\t");
         int row = Integer.parseInt(leer.readLine());
-        return row;
+        return row - 1;
     }
-    public static int leerCol() throws IOException{
+
+    public static int leerCol() throws IOException {
         System.out.print("Columna del espacio que desea descubrir:\t");
         int col = Integer.parseInt(leer.readLine());
-        return col;
+        return col - 1;
     }
 }

@@ -25,25 +25,23 @@ public class RutinasMinas {
 
     //    Mapa 8x8 para juego medio (lo que el usuario ve)
     public static int[][] medioJuego = {
-        {11,11,11,11,11,11,11,11},
-        {11,11,11,11,11,11,11,11},
-        {11,11,11,11,11,11,11,11},
-        {11,11,11,11,11,11,11,11},
-        {11,11,11,11,11,11,11,11},
-        {11,11,11,11,11,11,11,11},
-        {11,11,11,11,11,11,11,11},
-        {11,11,11,11,11,11,11,11},
-    };
+        {11, 11, 11, 11, 11, 11, 11, 11},
+        {11, 11, 11, 11, 11, 11, 11, 11},
+        {11, 11, 11, 11, 11, 11, 11, 11},
+        {11, 11, 11, 11, 11, 11, 11, 11},
+        {11, 11, 11, 11, 11, 11, 11, 11},
+        {11, 11, 11, 11, 11, 11, 11, 11},
+        {11, 11, 11, 11, 11, 11, 11, 11},
+        {11, 11, 11, 11, 11, 11, 11, 11},};
     public static int[][] medioCompleto = new int[8][8];
 
-    
-    public static int [][] terrenoDisplay;
-    public static int [][] terrenoCompleto;
+    public static int[][] terrenoDisplay;
+    public static int[][] terrenoCompleto;
     /*
     0 => - (No minas)      |1 => 1     |2 => 2     |3 => 3     |4 => 4     
     |5 => 5     |6 => 6     |7 => 7     |8 => 8        |9 => X (Mina)       |10 => M (Marca) |11 => # (Terreno cubierto)*/
     public static char[] SYMBOLS = {'-', '1', '2', '3', '4', '5', '6', '7', '8', 'X', 'M', '#'};
-    
+
     /*
     TODO ESTO ES PARA CREAR LAS BOMBAS Y PONERLAS EN EL MAPA
     TODO ESTO ES PARA CREAR LAS BOMBAS Y PONERLAS EN EL MAPA
@@ -134,7 +132,7 @@ public class RutinasMinas {
         boolean botLeftExist = checkExistence(length, botRow, leftCol);
         boolean botRightExist = checkExistence(length, botRow, rightCol);
         boolean leftExist = checkExistence(length, row, leftCol);
-        boolean rightExist = checkExistence(length, botRow, rightCol);
+        boolean rightExist = checkExistence(length, row, rightCol);
 
         if (topExist) {
             int top = pmapa[topRow][col];
@@ -203,12 +201,26 @@ public class RutinasMinas {
         }
         return positionExists;
     }
-    
+
     /*
     ESTO ES PARA DESCUBRIR UN ESPACIO
     ESTO ES PARA DESCUBRIR UN ESPACIO
-    */
-    public static void descubrirEspacio(int [][] pmapa, int row, int col){
+     */
+    public static boolean descubrirEspacio(int[][] juego, int[][] completo, int row, int col) {
+        boolean win = true;
+        if (completo[row][col] == 9) {
+            win = false;
+        }else{
+            juego[row][col] = completo[row][col];
+        }
+        return win;
+    }
+    
+    public static void revealEmpty(){
         
+    }
+    
+    public static void marcarEspacio(int[][] juego, int[][] completo, int row, int col) {
+        juego[row][col] = 10;
     }
 }
