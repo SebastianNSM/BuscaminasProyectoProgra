@@ -17,8 +17,21 @@ public class Buscaminas {
     static BufferedReader leer = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) throws IOException {
-//        Esto genera el mapa con las posiciones que elija el usuario
-        setUp();
+//        Esto genera el mapa con las posiciones que e1lija el usuario
+//        setUp();
+        int[][] prueba = {
+            {0, 0, 1},
+            {1, 0, 0},
+            {1, 0, 1},};
+        int[][] juego = {
+            {11, 11, 11},
+            {11, 11, 11},
+            {11, 11, 11},};
+
+        imprimirMapa(prueba);
+        RutinasMinas.descubrirEspacio(juego, prueba, 0,0);
+        imprimirMapa(juego);
+        
     }
 
     /*
@@ -54,15 +67,15 @@ public class Buscaminas {
         System.out.println("/-----------------/");
         System.out.println("| 1.  Descubrir   |");
         System.out.println("| 2.  Marcar      |");
+        System.out.println("| 3.  Rendirse    |");
         System.out.println("/-----------------/");
     }
-    
-    static void textoPerder(){
-        System.out.println("/-----------------/");
-        System.out.println("|.................|");
-        System.out.println("|...Has perdido!..|");
-        System.out.println("|.................|");
-        System.out.println("/-----------------/");
+
+    static void textoPerder() {
+        System.out.println("/-----------------/\t/-----------------/\t/-----------------/");
+        System.out.println("| Mejor suerte la |\t| Mejor suerte la |\t| Mejor suerte la |");
+        System.out.println("|     proxima!    |\t|     proxima!    |\t|     proxima!    |");
+        System.out.println("/-----------------/\t/-----------------/\t/-----------------/");
     }
 
     static int leerOpcionJuego() throws IOException {
@@ -88,16 +101,22 @@ public class Buscaminas {
                 win = RutinasMinas.descubrirEspacio(juego, completo, row, col);
                 if (win == true) {
                     imprimirMapa(juego);
-                }else{
+                } else {
                     textoPerder();
                 }
                 break;
             case 2:
                 row = leerRow();
                 col = leerCol();
-                RutinasMinas.marcarEspacio(juego, completo, row, col);
+                RutinasMinas.marcarEspacio(juego, row, col);
                 imprimirMapa(juego);
                 break;
+
+            case 3:
+                textoPerder();
+                win = false;
+                break;
+
             default: //Cualquier otro valor dado por el usuario se considera invalido
 
                 System.out.println("Opcion invalida");
@@ -136,7 +155,6 @@ public class Buscaminas {
                 juego(RutinasMinas.medioJuego, RutinasMinas.medioCompleto);
                 break;
             default: //Cualquier otro valor dado por el usuario se considera invalido
-
                 System.out.println("Opcion invalida");
                 System.out.println();
                 break;

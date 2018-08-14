@@ -8,10 +8,9 @@ Modificado por: -
  */
 package buscaminas;
 
-import java.util.Arrays;
-
 public class RutinasMinas {
 
+    public static int[][] arregloPositions;
     //    Mapa 3x3 para juego facil (lo que el usuario ve)
     public static int[][] facilJuego = {
         {11, 11, 11, 11, 11},
@@ -35,12 +34,10 @@ public class RutinasMinas {
         {11, 11, 11, 11, 11, 11, 11, 11},};
     public static int[][] medioCompleto = new int[8][8];
 
-    public static int[][] terrenoDisplay;
-    public static int[][] terrenoCompleto;
     /*
     0 => - (No minas)      |1 => 1     |2 => 2     |3 => 3     |4 => 4     
     |5 => 5     |6 => 6     |7 => 7     |8 => 8        |9 => X (Mina)       |10 => M (Marca) |11 => # (Terreno cubierto)*/
-    public static char[] SYMBOLS = {'-', '1', '2', '3', '4', '5', '6', '7', '8', 'X', 'M', '#'};
+    public static char[] SYMBOLS = {'-', '1', '2', '3', '4', '5', '6', '7', '8', 'X', 'M', '#', '~'};
 
     /*
     TODO ESTO ES PARA CREAR LAS BOMBAS Y PONERLAS EN EL MAPA
@@ -114,16 +111,17 @@ public class RutinasMinas {
             }
         }
     }
-    
-    public static int currentPositionValue(boolean position,int [][] pmapa, int row, int col){
+
+    public static int currentPositionValue(boolean position, int[][] pmapa, int row, int col) {
         int counter = 0;
-        if(position){
-            if(pmapa[row][col] == 9){
+        if (position) {
+            if (pmapa[row][col] == 9) {
                 counter++;
             }
         }
         return counter;
     }
+
     public static int buscaMina(int[][] pmapa, int row, int col) {
         int currentPosition = 0;
 //      Verifica que el row y el col esten en el rango del arreglo
@@ -142,58 +140,11 @@ public class RutinasMinas {
         boolean botRightExist = checkExistence(length, botRow, rightCol);
         boolean leftExist = checkExistence(length, row, leftCol);
         boolean rightExist = checkExistence(length, row, rightCol);
-        
-        currentPosition = currentPositionValue(leftExist, pmapa, row, leftCol)+currentPositionValue(rightExist, pmapa, row, rightCol)+currentPositionValue(botRightExist, pmapa, botRow, rightCol)+currentPositionValue(botLeftExist,pmapa,botRow,leftCol)+currentPositionValue(botExist,pmapa,botRow,col)+currentPositionValue(topRightExist,pmapa,topRow,rightCol)+currentPositionValue(topLeftExist,pmapa,topRow,leftCol)+currentPositionValue(topExist,pmapa,topRow,col);
-        
-        
-//        if (topExist) {
-//            int top = pmapa[topRow][col];
-//            if (top == 9) {
-//                currentPosition++;
-//            }
-//        }
-//        if (topLeftExist) {
-//            int topLeft = pmapa[topRow][leftCol];
-//            if (topLeft == 9) {
-//                currentPosition++;
-//            }
-//        }
-//        if (leftExist) {
-//            int left = pmapa[row][leftCol];
-//            if (left == 9) {
-//                currentPosition++;
-//            }
-//        }
-//        if (botLeftExist) {
-//            int botLeft = pmapa[botRow][leftCol];
-//            if (botLeft == 9) {
-//                currentPosition++;
-//            }
-//        }
-//        if (botExist) {
-//            int bot = pmapa[botRow][col];
-//            if (bot == 9) {
-//                currentPosition++;
-//            }
-//        }
-//        if (botRightExist) {
-//            int botRight = pmapa[botRow][rightCol];
-//            if (botRight == 9) {
-//                currentPosition++;
-//            }
-//        }
-//        if (rightExist) {
-//            int right = pmapa[row][rightCol];
-//            if (right == 9) {
-//                currentPosition++;
-//            }
-//        }
-//        if (topRightExist) {
-//            int topRight = pmapa[topRow][rightCol];
-//            if (topRight == 9) {
-//                currentPosition++;
-//            }
-//        }
+
+        currentPosition = currentPositionValue(leftExist, pmapa, row, leftCol) + currentPositionValue(rightExist, pmapa, row, rightCol)
+                + currentPositionValue(botRightExist, pmapa, botRow, rightCol) + currentPositionValue(botLeftExist, pmapa, botRow, leftCol) + currentPositionValue(botExist, pmapa, botRow, col)
+                + currentPositionValue(topRightExist, pmapa, topRow, rightCol) + currentPositionValue(topLeftExist, pmapa, topRow, leftCol) + currentPositionValue(topExist, pmapa, topRow, col);
+
         pmapa[row][col] = currentPosition;
         return currentPosition;
     }
@@ -222,17 +173,54 @@ public class RutinasMinas {
         boolean win = true;
         if (completo[row][col] == 9) {
             win = false;
-        }else{
+        } else if (completo[row][col] == 0) {
+            clearEmpty(juego,completo, row, col);
+                    
+        } else {
             juego[row][col] = completo[row][col];
         }
         return win;
     }
     
-    public static void revealEmpty(){
+    public static void clearEmpty(int [][] juego, int [][] completo, int row, int col){
+        checkEmptySpace(completo, row, col);
+    }
+    public static void checkEmptySpace(int [][] completo, int row, int col){
+        int length = completo.length;
+
+        int topRow = row - 1;
+        int botRow = row + 1;
+        int leftCol = col - 1;
+        int rightCol = col + 1;
+
+        boolean topExist = checkExistence(length, topRow, col);
+        boolean topLeftExist = checkExistence(length, topRow, leftCol);
+        boolean topRightExist = checkExistence(length, topRow, rightCol);
+        boolean botExist = checkExistence(length, botRow, col);
+        boolean botLeftExist = checkExistence(length, botRow, leftCol);
+        boolean botRightExist = checkExistence(length, botRow, rightCol);
+        boolean leftExist = checkExistence(length, row, leftCol);
+        boolean rightExist = checkExistence(length, row, rightCol);
+        
+        String coordenadas = "";
+        coordenadas += checkSides(topExist, completo, topRow, col, coordenadas);
+        System.out.println(coordenadas);
         
     }
-    
-    public static void marcarEspacio(int[][] juego, int[][] completo, int row, int col) {
+    public static String checkSides(boolean position, int[][] pmapa, int row, int col, String coordenadas) {
+        
+        if (position) {
+            if (pmapa[row][col] == 0) {
+                String actualPos = row+""+col;
+                if(!coordenadas.contains(actualPos)){
+                    coordenadas+=actualPos;
+                }
+            }
+        }
+        return coordenadas;
+    }
+
+    public static void marcarEspacio(int[][] juego, int row, int col) {
         juego[row][col] = 10;
     }
 }
