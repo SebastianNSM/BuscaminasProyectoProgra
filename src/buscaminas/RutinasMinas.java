@@ -174,11 +174,141 @@ public class RutinasMinas {
         if (completo[row][col] == 9) {
             win = false;
         } else if (completo[row][col] == 0) {
-            
+            clearSpace(juego, completo, row, col);
+            clearInGame(juego, completo);
         } else {
             juego[row][col] = completo[row][col];
         }
         return win;
+    }
+
+    public static int[][] clearInGame(int[][] juego, int[][] completo) {
+
+        for (int i = 0; i < completo.length; i++) {
+            for (int j = 0; j < completo[i].length; j++) {
+                if (completo[i][j] == 12) {
+                    
+                    arrayClear(juego, completo, i, j);
+                }
+            }
+        }
+        return juego;
+    }
+
+    public static void arrayClear(int[][] juego, int[][] completo, int row, int col) {
+        int length = juego.length;
+
+        int topRow = row - 1;
+        int botRow = row + 1;
+        int leftCol = col - 1;
+        int rightCol = col + 1;
+
+        boolean topExist = checkExistence(length, topRow, col);
+        boolean topLeftExist = checkExistence(length, topRow, leftCol);
+        boolean topRightExist = checkExistence(length, topRow, rightCol);
+        boolean botExist = checkExistence(length, botRow, col);
+        boolean botLeftExist = checkExistence(length, botRow, leftCol);
+        boolean botRightExist = checkExistence(length, botRow, rightCol);
+        boolean leftExist = checkExistence(length, row, leftCol);
+        boolean rightExist = checkExistence(length, row, rightCol);
+
+        clearArea(juego, completo, topExist, topRow, col);
+        clearArea(juego, completo, topLeftExist, topRow, leftCol);
+        clearArea(juego, completo, leftExist, row, leftCol);
+        clearArea(juego, completo, botLeftExist, botRow, leftCol);
+        clearArea(juego, completo, botExist, botRow, col);
+        clearArea(juego, completo, botRightExist, botRow, rightCol);
+        clearArea(juego, completo, rightExist, row, rightCol);
+        clearArea(juego, completo, topRightExist, topRow, rightCol);
+        
+        
+
+    }
+
+    public static void clearArea(int[][] juego, int[][] completo, boolean exists, int row, int col) {
+        if (exists) {
+            juego[row][col] = completo[row][col];
+        }
+    }
+
+    public static String clearSpace(int[][] juego, int[][] completo, int row, int col) {
+
+        String coordenadas = "";
+
+        coordenadas = getCoordinates(completo, row, col, coordenadas);
+
+        coordenadas = reuseString(completo, coordenadas);
+
+        return coordenadas;
+    }
+
+//    Reusa el String, pero le quita la primer pos
+    public static String reuseString(int[][] completo, String coordenadas) {
+
+        while (coordenadas.length() > 1) {
+            StringBuffer check = new StringBuffer(coordenadas);
+            int x = Integer.parseInt(Character.toString(check.charAt(0)));
+            int y = Integer.parseInt(Character.toString(check.charAt(1)));
+            check.replace(0, 2, "");
+            coordenadas = check.toString();
+            coordenadas = getCoordinates(completo, x, y, coordenadas);
+
+        }
+        return coordenadas;
+    }
+
+//    Toma todas las coordenadas de una position
+    private static String getCoordinates(int[][] completo, int row, int col, String coordenadas) {
+        int length = completo.length;
+        completo[row][col] = 12;
+        int topRow = row - 1;
+        int botRow = row + 1;
+        int leftCol = col - 1;
+        int rightCol = col + 1;
+
+        boolean topExist = checkExistence(length, topRow, col);
+        boolean topLeftExist = checkExistence(length, topRow, leftCol);
+        boolean topRightExist = checkExistence(length, topRow, rightCol);
+        boolean botExist = checkExistence(length, botRow, col);
+        boolean botLeftExist = checkExistence(length, botRow, leftCol);
+        boolean botRightExist = checkExistence(length, botRow, rightCol);
+        boolean leftExist = checkExistence(length, row, leftCol);
+        boolean rightExist = checkExistence(length, row, rightCol);
+
+        coordenadas = isClear(topExist, topRow, col, completo, coordenadas);
+        coordenadas = isClear(topLeftExist, topRow, leftCol, completo, coordenadas);
+        coordenadas = isClear(leftExist, row, leftCol, completo, coordenadas);
+        coordenadas = isClear(botLeftExist, botRow, leftCol, completo, coordenadas);
+        coordenadas = isClear(botExist, botRow, col, completo, coordenadas);
+        coordenadas = isClear(botRightExist, botRow, rightCol, completo, coordenadas);
+        coordenadas = isClear(rightExist, row, rightCol, completo, coordenadas);
+        coordenadas = isClear(topRightExist, topRow, rightCol, completo, coordenadas);
+
+        return coordenadas;
+    }
+
+//    Agrega la position al string en caso de no pertenecer al mismo.
+    public static String isClear(boolean exists, int row, int col, int[][] completo, String position) {
+
+        if (exists) {
+            if (completo[row][col] == 0) {
+                if (position.length() == 0) {
+                    position += row + "" + col;
+                } else {
+                    boolean contains = false;
+                    for (int i = 0; i <= position.length() - 2; i += 2) {
+                        if (position.substring(i, i + 2).contains(row + "" + col)) {
+                            contains = true;
+                        }
+                    }
+                    if (!contains) {
+                        position += row + "" + col;
+                    }
+                }
+            }
+        }
+
+        return position;
     }
 
     public static void marcarEspacio(int[][] juego, int row, int col) {
