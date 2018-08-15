@@ -18,19 +18,19 @@ public class Buscaminas {
 
     public static void main(String[] args) throws IOException {
 //        Esto genera el mapa con las posiciones que e1lija el usuario
-//        setUp();
-        int[][] prueba = {
-            {0, 0, 1},
-            {1, 0, 0},
-            {1, 0, 1},};
-        int[][] juego = {
-            {11, 11, 11},
-            {11, 11, 11},
-            {11, 11, 11},};
-
-        imprimirMapa(prueba);
-        RutinasMinas.descubrirEspacio(juego, prueba, 0,0);
-        imprimirMapa(juego);
+        setUp();
+//        int[][] prueba = {
+//            {0, 0, 1},
+//            {1, 0, 0},
+//            {1, 0, 1},};
+//        int[][] juego = {
+//            {11, 11, 11},
+//            {11, 11, 11},
+//            {11, 11, 11},};
+//
+//        imprimirMapa(prueba);
+//        RutinasMinas.descubrirEspacio(juego, prueba, 0,0);
+//        imprimirMapa(juego);
         
     }
 

@@ -174,50 +174,11 @@ public class RutinasMinas {
         if (completo[row][col] == 9) {
             win = false;
         } else if (completo[row][col] == 0) {
-            clearEmpty(juego,completo, row, col);
-                    
+            
         } else {
             juego[row][col] = completo[row][col];
         }
         return win;
-    }
-    
-    public static void clearEmpty(int [][] juego, int [][] completo, int row, int col){
-        checkEmptySpace(completo, row, col);
-    }
-    public static void checkEmptySpace(int [][] completo, int row, int col){
-        int length = completo.length;
-
-        int topRow = row - 1;
-        int botRow = row + 1;
-        int leftCol = col - 1;
-        int rightCol = col + 1;
-
-        boolean topExist = checkExistence(length, topRow, col);
-        boolean topLeftExist = checkExistence(length, topRow, leftCol);
-        boolean topRightExist = checkExistence(length, topRow, rightCol);
-        boolean botExist = checkExistence(length, botRow, col);
-        boolean botLeftExist = checkExistence(length, botRow, leftCol);
-        boolean botRightExist = checkExistence(length, botRow, rightCol);
-        boolean leftExist = checkExistence(length, row, leftCol);
-        boolean rightExist = checkExistence(length, row, rightCol);
-        
-        String coordenadas = "";
-        coordenadas += checkSides(topExist, completo, topRow, col, coordenadas);
-        System.out.println(coordenadas);
-        
-    }
-    public static String checkSides(boolean position, int[][] pmapa, int row, int col, String coordenadas) {
-        
-        if (position) {
-            if (pmapa[row][col] == 0) {
-                String actualPos = row+""+col;
-                if(!coordenadas.contains(actualPos)){
-                    coordenadas+=actualPos;
-                }
-            }
-        }
-        return coordenadas;
     }
 
     public static void marcarEspacio(int[][] juego, int row, int col) {
