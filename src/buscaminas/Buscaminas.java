@@ -40,6 +40,12 @@ public class Buscaminas {
             mostrarMenuJuego();
             opc = leerOpcionJuego();
             win = ejecutarAccionJuego(opc, juego, completo);
+            if(win){
+                if(RutinasMinas.checkWin(juego, completo)){
+                    imprimirGane();
+                    break;
+                }
+            }
         } while (win);
     }
 
@@ -54,7 +60,8 @@ public class Buscaminas {
         System.out.println("/-----------------/");
         System.out.println("| 1.  Descubrir   |");
         System.out.println("| 2.  Marcar      |");
-        System.out.println("| 3.  Rendirse    |");
+        System.out.println("| 3.  Desmarcar   |");
+        System.out.println("| 4.  Rendirse    |");
         System.out.println("/-----------------/");
     }
 
@@ -62,6 +69,13 @@ public class Buscaminas {
         System.out.println("/-----------------/\t/-----------------/\t/-----------------/");
         System.out.println("| Mejor suerte la |\t| Mejor suerte la |\t| Mejor suerte la |");
         System.out.println("|     proxima!    |\t|     proxima!    |\t|     proxima!    |");
+        System.out.println("/-----------------/\t/-----------------/\t/-----------------/");
+    }
+    
+    static void imprimirGane(){
+        System.out.println("/-----------------/\t/-----------------/\t/-----------------/");
+        System.out.println("|   FELICIDADES!  |\t|   FELICIDADES!  |\t|   FELICIDADES!  |");
+        System.out.println("|     GANASTE!    |\t|     GANASTE!    |\t|     GANASTE!    |");
         System.out.println("/-----------------/\t/-----------------/\t/-----------------/");
     }
 
@@ -85,10 +99,10 @@ public class Buscaminas {
             case 1:
                 row = leerRow();
                 col = leerCol();
+                espacioVisto(row, col, juego, completo);
                 win = RutinasMinas.descubrirEspacio(juego, completo, row, col);
                 if (win == true) {
                     imprimirMapa(juego);
-                    imprimirMapa(completo);
                 } else {
                     imprimirMapa(completo);
                     textoPerder();
@@ -97,11 +111,24 @@ public class Buscaminas {
             case 2:
                 row = leerRow();
                 col = leerCol();
-                RutinasMinas.marcarEspacio(juego, row, col);
-                imprimirMapa(juego);
+                boolean res = RutinasMinas.marcarEspacio(juego, row, col);
+                if(!res){
+                    imprimirMapa(juego);
+                }else{
+                    System.out.println("Ya no se pueden marcar más espacios");
+                }
+                
                 break;
 
             case 3:
+                row = leerRow();
+                col = leerCol();
+                RutinasMinas.desmarcarEspacio(juego, completo, row, col);
+                imprimirMapa(juego);
+                break;
+
+            case 4:
+                imprimirMapa(completo);
                 textoPerder();
                 win = false;
                 break;
@@ -132,15 +159,15 @@ public class Buscaminas {
             case 1:
                 RutinasMinas.setMines(RutinasMinas.facilCompleto);
                 RutinasMinas.generaMapa(RutinasMinas.facilCompleto);
+                RutinasMinas.setCantMarcas(RutinasMinas.facilCompleto);
                 imprimirMapa(RutinasMinas.facilJuego);
-                imprimirMapa(RutinasMinas.facilCompleto);
                 juego(RutinasMinas.facilJuego, RutinasMinas.facilCompleto);
                 break;
             case 2:
                 RutinasMinas.setMines(RutinasMinas.medioCompleto);
                 RutinasMinas.generaMapa(RutinasMinas.medioCompleto);
+                RutinasMinas.setCantMarcas(RutinasMinas.medioCompleto);
                 imprimirMapa(RutinasMinas.medioJuego);
-                imprimirMapa(RutinasMinas.medioCompleto);
                 juego(RutinasMinas.medioJuego, RutinasMinas.medioCompleto);
                 break;
             default: //Cualquier otro valor dado por el usuario se considera invalido
@@ -155,7 +182,25 @@ public class Buscaminas {
     Estas procedimientos son para generar el mapa  AAA
     Estos procedimientos son para generar el mapa  ||
      */
+    public static void espacioVisto(int row, int col, int[][] juego, int[][] completo) {
+        if (juego[row][col] == completo[row][col]) {
+            System.out.println("________________________________________");
+            System.out.println();
+            System.out.println("Este espacio ya fue revelado previamente");
+            System.out.println("________________________________________");
+            System.out.println();
+        }
+    }
+
     public static void imprimirMapa(int[][] pmapa) {
+//        En este espacio se imprime la cantidad de marcas que han sido utilizadas
+
+        int cantMarcas = RutinasMinas.getCantMarcas();
+        System.out.println("|------------------------|");
+        System.out.println("|            " + cantMarcas + "           |");
+        System.out.println("|    Marcas restantes    |");
+        System.out.println("|------------------------|");
+
         //Estos simbolos nunca cambian, se quedan siempre iguales
         char[] symbolos = RutinasMinas.SYMBOLS;
 //      Imprime las coordenadas superiores
@@ -195,13 +240,13 @@ public class Buscaminas {
     }
 
     public static int leerRow() throws IOException {
-        System.out.print("Fila del espacio que desea descubrir:\t");
+        System.out.print("Fila del espacio que desea usar:\t");
         int row = Integer.parseInt(leer.readLine());
         return row - 1;
     }
 
     public static int leerCol() throws IOException {
-        System.out.print("Columna del espacio que desea descubrir:\t");
+        System.out.print("Columna del espacio que desea usar:\t");
         int col = Integer.parseInt(leer.readLine());
         return col - 1;
     }

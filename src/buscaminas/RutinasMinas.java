@@ -37,7 +37,28 @@ public class RutinasMinas {
     /*
     0 => - (No minas)      |1 => 1     |2 => 2     |3 => 3     |4 => 4     
     |5 => 5     |6 => 6     |7 => 7     |8 => 8        |9 => X (Mina)       |10 => M (Marca) |11 => # (Terreno cubierto)*/
-    public static char[] SYMBOLS = {'-', '1', '2', '3', '4', '5', '6', '7', '8', 'X', 'M', '#', '~'};
+    public static char[] SYMBOLS = {'-', '1', '2', '3', '4', '5', '6', '7', '8', 'X', 'M', '#', '-'};
+
+    public static int cantMarcas;
+
+    public static boolean checkWin(int[][] juego, int[][] completo) {
+        boolean winStatus = false;
+        int contMinasTapadas = 0;
+
+        for (int i = 0; i < juego.length; i++) {
+            for (int j = 0; j < juego[i].length; j++) {
+                if(juego[i][j] == 11 || juego[i][j] == 10){
+                    contMinasTapadas++;
+                }
+            }
+        }
+        
+        if(contMinasTapadas == juego.length){
+            winStatus = true;
+        }
+
+        return winStatus;
+    }
 
     /*
     TODO ESTO ES PARA CREAR LAS BOMBAS Y PONERLAS EN EL MAPA
@@ -174,20 +195,24 @@ public class RutinasMinas {
         if (completo[row][col] == 9) {
             win = false;
         } else if (completo[row][col] == 0) {
+            juego[row][col] = 0;
             clearSpace(juego, completo, row, col);
             clearInGame(juego, completo);
+        } else if (juego[row][col] == 10) {
+            juego[row][col] = 10;
         } else {
             juego[row][col] = completo[row][col];
         }
         return win;
     }
 
+//    Esto es para revelar espacios en el tablero de juego
     public static int[][] clearInGame(int[][] juego, int[][] completo) {
 
         for (int i = 0; i < completo.length; i++) {
             for (int j = 0; j < completo[i].length; j++) {
                 if (completo[i][j] == 12) {
-                    
+
                     arrayClear(juego, completo, i, j);
                 }
             }
@@ -195,6 +220,7 @@ public class RutinasMinas {
         return juego;
     }
 
+//    Esto libera espacios adyacentes si la pos existe
     public static void arrayClear(int[][] juego, int[][] completo, int row, int col) {
         int length = juego.length;
 
@@ -220,16 +246,16 @@ public class RutinasMinas {
         clearArea(juego, completo, botRightExist, botRow, rightCol);
         clearArea(juego, completo, rightExist, row, rightCol);
         clearArea(juego, completo, topRightExist, topRow, rightCol);
-        
-        
 
     }
 
+//    Si existe revele el espacio
     public static void clearArea(int[][] juego, int[][] completo, boolean exists, int row, int col) {
         if (exists) {
             juego[row][col] = completo[row][col];
         }
     }
+//    Motor de revelacion "Recursivo sin ser recursivo"
 
     public static String clearSpace(int[][] juego, int[][] completo, int row, int col) {
 
@@ -311,7 +337,35 @@ public class RutinasMinas {
         return position;
     }
 
-    public static void marcarEspacio(int[][] juego, int row, int col) {
+//    Esto es para marcar un espacio
+    public static boolean marcarEspacio(int[][] juego, int row, int col) {
+        boolean res = false;
         juego[row][col] = 10;
+        cantMarcas--;
+        if (cantMarcas < 0) {
+            res = true;
+        }
+
+        return res;
+    }
+
+    public static boolean desmarcarEspacio(int[][] juego, int[][] completo, int row, int col) {
+        boolean res = false;
+        if (juego[row][col] == 10) {
+            juego[row][col] = 11;
+            cantMarcas++;
+        }
+        if (cantMarcas > juego.length) {
+            res = true;
+        }
+        return res;
+    }
+
+    public static void setCantMarcas(int[][] completo) {
+        cantMarcas = completo.length;
+    }
+
+    public static int getCantMarcas() {
+        return cantMarcas;
     }
 }
