@@ -99,6 +99,12 @@ public class Buscaminas {
             case 1:
                 row = leerRow();
                 col = leerCol();
+                
+                if(row < 0 || row > juego.length-1 || col < 0 || col > juego.length-1){
+                    
+                    System.out.println("Esa coordenada no existe.");
+                    break;
+                }
                 espacioVisto(row, col, juego, completo);
                 win = RutinasMinas.descubrirEspacio(juego, completo, row, col);
                 if (win == true) {
@@ -111,6 +117,11 @@ public class Buscaminas {
             case 2:
                 row = leerRow();
                 col = leerCol();
+                if(row < 0 || row > juego.length-1 || col < 0 || col > juego.length-1){
+                    
+                    System.out.println("Esa coordenada no existe.");
+                    break;
+                }
                 boolean res = RutinasMinas.marcarEspacio(juego, row, col);
                 if(!res){
                     imprimirMapa(juego);
@@ -123,6 +134,11 @@ public class Buscaminas {
             case 3:
                 row = leerRow();
                 col = leerCol();
+                if(row < 0 || row > juego.length-1 || col < 0 || col > juego.length-1){
+                    
+                    System.out.println("Esa coordenada no existe.");
+                    break;
+                }
                 RutinasMinas.desmarcarEspacio(juego, completo, row, col);
                 imprimirMapa(juego);
                 break;

@@ -52,7 +52,7 @@ public class RutinasMinas {
                 }
             }
         }
-        
+//        Si cantidad de minas tapadas = dimensiones del tablero  (numBombas)
         if(contMinasTapadas == juego.length){
             winStatus = true;
         }
